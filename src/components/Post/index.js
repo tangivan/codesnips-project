@@ -4,14 +4,14 @@ import Header from "./Header";
 import Snippet from "./Snippet";
 import Actions from "./Actions";
 import Footer from "./Footer";
+import Comments from "./Comments";
 
 const Post = ({ content }) => {
   const commentInput = useRef(null);
   const handleFocus = () => commentInput.current.focus();
-
   return (
     <div className="rounded col-span-4 border bg-white border-gray-500 mb-8">
-      <Header username={content.username} />
+      <Header username={content.username} title={content.title} />
       <Snippet
         language={content.language}
         snippet={content.snippet}
@@ -24,6 +24,12 @@ const Post = ({ content }) => {
         handleFocus={handleFocus}
       />
       <Footer description={content.description} username={content.username} />
+      <Comments
+        docId={content.docId}
+        comments={content.comments}
+        posted={content.dateCreated}
+        commentInput={commentInput}
+      />
     </div>
   );
 };
