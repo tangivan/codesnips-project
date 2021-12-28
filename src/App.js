@@ -5,9 +5,13 @@ import UserContext from "./context/user";
 import useAuthListener from "./hooks/useAuthListener";
 import "./styles/tailwind.css";
 
+import ProtectedRoute from "./helpers/ProtectedRoute";
+import IsUserLoggedIn from "./helpers/IsUserLoggedIn";
+
 const Login = lazy(() => import("./pages/Login"));
 const SignUp = lazy(() => import("./pages/Signup"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
+const Profile = lazy(() => import("./pages/Profile"));
 const NotFound = lazy(() => import("./pages/Notfound"));
 
 function App() {
@@ -18,9 +22,24 @@ function App() {
       <Router>
         <Suspense fallback={<p>Loading ...</p>}>
           <Switch>
-            <Route path={ROUTES.LOGIN} component={Login} exact />
-            <Route path={ROUTES.SIGN_UP} component={SignUp} exact />
-            <Route path={ROUTES.DASHBOARD} component={Dashboard} exact />
+            <IsUserLoggedIn
+              user={user}
+              loggedInPath={ROUTES.DASHBOARD}
+              path={ROUTES.LOGIN}
+            >
+              <Login />
+            </IsUserLoggedIn>
+            <IsUserLoggedIn
+              user={user}
+              loggedInPath={ROUTES.DASHBOARD}
+              path={ROUTES.SIGN_UP}
+            >
+              <SignUp />
+            </IsUserLoggedIn>
+            <Route path={ROUTES.PROFILE} component={Profile} />
+            <ProtectedRoute user={user} path={ROUTES.DASHBOARD} exact>
+              <Dashboard />
+            </ProtectedRoute>
             <Route component={NotFound} />
           </Switch>
         </Suspense>
