@@ -3,10 +3,14 @@ import { Link } from "react-router-dom";
 import FirebaseContext from "../context/firebase";
 import UserContext from "../context/user";
 import * as ROUTES from "../constants/routes";
+import useUser from "../hooks/useUser";
+import { useHistory } from "react-router-dom";
 
 const Header = () => {
+  const { user: loggedInUser } = useContext(UserContext);
+  const { user } = useUser(loggedInUser?.uid);
   const { firebase } = useContext(FirebaseContext);
-  const { user } = useContext(UserContext);
+  const history = useHistory();
 
   return (
     <header className="h-16 bg-white border-b border-gray-500 mb-8">
@@ -24,7 +28,7 @@ const Header = () => {
             </h1>
           </div>
           <div className="text-gray-700 text-center flex items-center align-items">
-            {user ? (
+            {user.username ? (
               <>
                 <Link to={ROUTES.DASHBOARD} aria-label="Dashboard">
                   <svg
@@ -46,10 +50,14 @@ const Header = () => {
                 <button
                   type="button"
                   title="Sign Out"
-                  onClick={() => firebase.auth().signOut()}
+                  onClick={() => {
+                    firebase.auth().signOut();
+                    history.push(ROUTES.LOGIN);
+                  }}
                   onKeyDown={(event) => {
                     if (event.key === "Enter") {
                       firebase.auth().signOut();
+                      history.push(ROUTES.LOGIN);
                     }
                   }}
                 >
@@ -69,11 +77,11 @@ const Header = () => {
                   </svg>
                 </button>
                 <div className="flex items-center cursor-pointer">
-                  <Link to={`/p/${user.displayName}`}>
+                  <Link to={`/p/${user?.username}`}>
                     <img
                       className="runded-full h-8 w-8 flex"
-                      src={`/images/avatars/${user.displayName}.png`}
-                      alt={`${user.displayName} profile`}
+                      src={`/images/avatars/${user?.username}.png`}
+                      alt={`${user?.username} profile`}
                     />
                   </Link>
                 </div>
