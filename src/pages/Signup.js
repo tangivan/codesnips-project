@@ -51,6 +51,7 @@ const Signup = () => {
         setError(error.message);
       }
     } else {
+      setUsername("");
       setError("That username is already taken, please try another.");
     }
   };
@@ -85,7 +86,7 @@ const Signup = () => {
             <input
               type="text"
               aria-label="Enter your full name"
-              placeholder="Full Name"
+              placeholder="Full name"
               className="text-sm text-gray-base w-full mr-3 py-5 px-4 h-2 border border-gray-primary rounded mb-2"
               onChange={({ target }) => setFullName(target.value)}
               value={fullName}
