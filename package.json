@@ -37,7 +37,7 @@
       "!<rootDir>/src/hooks/*.js",
       "!<rootDir>/src/services/firebase/*.js"
     ],
-    "coverageThresohold": {
+    "coverageThreshold": {
       "global": {
         "branches": 90,
         "functions": 90,
