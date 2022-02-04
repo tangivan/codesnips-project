@@ -45,6 +45,7 @@ const Signup = () => {
 
         history.push(ROUTES.DASHBOARD);
       } catch (error) {
+        setUsername("");
         setFullName("");
         setEmailAddress("");
         setPassword("");
@@ -52,12 +53,15 @@ const Signup = () => {
       }
     } else {
       setUsername("");
-      setError("That username is already taken, please try another.");
+      setFullName("");
+      setEmailAddress("");
+      setPassword("");
+      setError(() => "That username is already taken, please try another.");
     }
   };
 
   useEffect(() => {
-    document.title = "Signup - Codesnips";
+    document.title = "Sign Up - Codesnips";
   }, []);
 
   return (
@@ -72,9 +76,13 @@ const Signup = () => {
               className="mt-2 w-6/12 mb-4"
             />
           </h1>
-          {error && <p className="mb-4 text-xs text-red-primary">{error}</p>}
+          {error && (
+            <p data-testid="error" className="mb-4 text-xs text-red-primary">
+              {error}
+            </p>
+          )}
 
-          <form method="POST" onSubmit={handleSignup}>
+          <form method="POST" onSubmit={handleSignup} data-testid="signup">
             <input
               type="text"
               aria-label="Enter your username"
