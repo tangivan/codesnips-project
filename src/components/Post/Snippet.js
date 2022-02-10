@@ -1,10 +1,10 @@
 import PropTypes from "prop-types";
 import React, { useState } from "react";
 import SyntaxHighlighter from "react-syntax-highlighter";
-import { vs2015 } from "react-syntax-highlighter/dist/esm/styles/hljs";
+import { vs2015 } from "react-syntax-highlighter/dist/cjs/styles/hljs";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 
-const Snippet = ({ language, snippet, description }) => {
+const Snippet = ({ language, snippet }) => {
   const [isCopied, setIsCopied] = useState(false);
 
   return (
@@ -58,6 +58,6 @@ const Snippet = ({ language, snippet, description }) => {
 Snippet.propTypes = {
   language: PropTypes.string.isRequired,
   snippet: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
+  // description: PropTypes.string,
 };
 export default Snippet;

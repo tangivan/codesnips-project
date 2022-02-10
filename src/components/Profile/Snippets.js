@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import SyntaxHighlighter from "react-syntax-highlighter";
-import { vs2015 } from "react-syntax-highlighter/dist/esm/styles/hljs";
+import { vs2015 } from "react-syntax-highlighter/dist/cjs/styles/hljs";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { useState } from "react";
 
