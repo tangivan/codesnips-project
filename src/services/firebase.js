@@ -78,45 +78,12 @@ export async function updateFollowedUserFollowers(
     });
 }
 
-export async function addSnippet() {
-  // const sampleCode = `const generateId = () => {
-  //   return '_' + Math.random().toString(36).substr(2, 9);
-  // }`;
-  // return firebase
-  //   .firestore()
-  //   .collection("snippets")
-  //   .add({
-  //     comments: [
-  //       { comment: "niceeee", displayName: "ivannn" },
-  //       { comment: "im stealin this", displayName: "Learth" },
-  //     ],
-  //     dateCreated: Date.now(),
-  //     description: "quick id generator",
-  //     language: "javascript",
-  //     likes: [],
-  //     snippet: sampleCode,
-  //     snippetId: 10,
-  //     title: "random id generator",
-  //     userId: "2",
-  //     username: "SleepyTeas",
-  //   });
-  // const updateCode = `console.log("hello world");`;
-  // return firebase
-  //   .firestore()
-  //   .collection("snippets")
-  //   .doc("VUDgCG47qNMEQFfjZgfL")
-  //   .update({ userId: "2", username: "Magikarpet" });
-}
-
 export async function getSnippets(userId, following) {
   const result = await firebase
     .firestore()
     .collection("snippets")
     .where("userId", "in", following)
     .get();
-
-  console.log("userId", userId);
-  console.log("following", following);
 
   const userFollowedSnippets = result.docs.map((snippet) => ({
     ...snippet.data(),
@@ -136,4 +103,59 @@ export async function getSnippets(userId, following) {
   );
 
   return snippetsWithUserDetails;
+}
+
+export async function getUserSnippetsByUsername(username) {
+  const [user] = await getUserByUsername(username);
+
+  const result = await firebase
+    .firestore()
+    .collection("snippets")
+    .where("userId", "==", user.userId)
+    .get();
+
+  return result.docs.map((item) => ({
+    ...item.data(),
+    docId: item.id,
+  }));
+}
+
+export async function isUserFollowingProfile(loggedInUsername, profileUserId) {
+  const result = await firebase
+    .firestore()
+    .collection("users")
+    .where("username", "==", loggedInUsername)
+    .where("following", "array-contains", profileUserId)
+    .get();
+
+  const [response = {}] = result.docs.map((item) => ({
+    ...item.data(),
+    docId: item.id,
+  }));
+  return response.userId;
+}
+
+export async function toggleFollow(
+  isFollowingProfile,
+  activeUserDocId,
+  profileDocId,
+  profileUserId,
+  followingUserId
+) {
+  // 1st param: my doc id
+  // 2nd param: their user id
+  // 3rd param: is the user following this profile?
+  await updateLoggedInUserFollowing(
+    activeUserDocId,
+    profileUserId,
+    isFollowingProfile
+  );
+  // 1st param: my user id
+  // 2nd param: their doc id
+  // 3rd param: is the user following this profile?
+  await updateFollowedUserFollowers(
+    profileDocId,
+    followingUserId,
+    isFollowingProfile
+  );
 }
