@@ -23,6 +23,7 @@ const Header = () => {
                   src="/images/codesnipheader.png"
                   alt="Codesnips"
                   className="mt-2 w-6/12"
+                  title="Home"
                 />
               </Link>
             </h1>
@@ -82,6 +83,7 @@ const Header = () => {
                       className="runded-full h-8 w-8 flex"
                       src={`/images/avatars/${user?.username}.png`}
                       alt={`${user?.username} profile`}
+                      title="avatar"
                     />
                   </Link>
                 </div>
@@ -92,6 +94,7 @@ const Header = () => {
                   <button
                     type="button"
                     className="bg-blue-500 font-bold text-sm rounded text-white w-20 h-8"
+                    title="Log In"
                   >
                     Log In
                   </button>
@@ -100,6 +103,7 @@ const Header = () => {
                   <button
                     type="button"
                     className="font-bold text-sm rounded text-blue-300 w-20 h-8"
+                    title="Sign Up"
                   >
                     Sign Up
                   </button>
